@@ -24,3 +24,5 @@ bool GetWantTextInput();
 // Fonts
 void SetGlobalFontFromFileTTF(const char *path, float size_pixels,
         float spacing_x, float spacing_y, float oversample_x, float oversample_y);
+void SetGlobalFontAndIconsFromFileTTF(const char *path, const char *font_icon_path, float size_pixels,
+        float spacing_x, float spacing_y, float oversample_x, float oversample_y);

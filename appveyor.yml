@@ -26,7 +26,7 @@ test: off
 
 artifacts:
     - path: Release\imgui.dll
-      name: love-imgui-win64.dll
+      name: imgui.dll
 
 deploy:
     provider: GitHub

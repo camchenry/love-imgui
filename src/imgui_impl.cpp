@@ -363,3 +363,24 @@ void SetGlobalFontFromFileTTF(const char *path, float size_pixels, float spacing
     conf.GlyphExtraSpacing.y = spacing_y;
     io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf);
 }
+
+// Fonts
+void SetGlobalFontAndIconsFromFileTTF(const char *path, const char *font_icon_path, float size_pixels, float spacing_x, float spacing_y, float oversample_x, float oversample_y)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    ImFont* font = io.Fonts->AddFontDefault();
+
+    ImFontConfig conf;
+    conf.MergeMode = true;
+    conf.OversampleH = oversample_x;
+    conf.OversampleV = oversample_y;
+    conf.GlyphExtraSpacing.x = spacing_x;
+    conf.GlyphExtraSpacing.y = spacing_y;
+
+    // Add character ranges and merge into the previous font
+    // The ranges array is not copied by the AddFont* functions and is used lazily
+    // so ensure it is available for duration of font usage
+    static const ImWchar icons_ranges[] = { 0xf000, 0xf3ff, 0 }; // will not be copied by AddFont* so keep in scope.
+    io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf, io.Fonts->GetGlyphRangesDefault());
+    io.Fonts->AddFontFromFileTTF(font_icon_path, size_pixels, &conf, icons_ranges);
+}

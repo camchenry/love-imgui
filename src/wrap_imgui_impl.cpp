@@ -179,6 +179,59 @@ static int w_SetGlobalFontFromFileTTF(lua_State *L)
 	return 0;
 }
 
+static int w_SetGlobalFontAndIconsFromFileTTF(lua_State *L)
+{
+	size_t size;
+	const char *path = luaL_checklstring(L, 1, &size);
+	const char *icon_font_path = luaL_checklstring(L, 2, &size);
+	float size_pixels = luaL_checknumber(L, 3);
+	float spacing_x = luaL_optnumber(L, 4, 0);
+	float spacing_y = luaL_optnumber(L, 5, 0);
+	float oversample_x = luaL_optnumber(L, 6, 1);
+	float oversample_y = luaL_optnumber(L, 7, 1);
+
+	lua_getglobal(L, "love");
+	lua_getfield(L, -1, "filesystem");
+	lua_remove(L, -2);
+	lua_getfield(L, -1, "getRealDirectory");
+	lua_remove(L, -2);
+	lua_pushstring(L, path);
+	lua_call(L, 1, 1);
+	if (lua_isnil(L, -1))
+	{
+		lua_pushstring(L, "File does not exist.");
+		lua_error(L);
+		return 0;
+	}
+	lua_pushstring(L, "/");
+	lua_pushstring(L, path);
+	lua_concat(L, 3);
+	const char *realpath = lua_tostring(L, -1);
+	lua_pop(L, 1);
+
+	lua_getglobal(L, "love");
+	lua_getfield(L, -1, "filesystem");
+	lua_remove(L, -2);
+	lua_getfield(L, -1, "getRealDirectory");
+	lua_remove(L, -2);
+	lua_pushstring(L, path);
+	lua_call(L, 1, 1);
+	if (lua_isnil(L, -1))
+	{
+		lua_pushstring(L, "File does not exist.");
+		lua_error(L);
+		return 0;
+	}
+	lua_pushstring(L, "/");
+	lua_pushstring(L, path);
+	lua_concat(L, 3);
+	const char *real_icon_font_path = lua_tostring(L, -1);
+	lua_pop(L, 1);
+
+	SetGlobalFontAndIconsFromFileTTF(realpath, real_icon_font_path, size_pixels, spacing_x, spacing_y, oversample_x, oversample_y);
+	return 0;
+}
+
 /*
 ** Wrapped functions
 */
@@ -856,6 +909,7 @@ static const struct luaL_Reg imguilib[] = {
 { "GetStyleColName", w_GetStyleColorName },
 { "GetStyleColCount", w_GetStyleColCount },
 { "SetGlobalFontFromFileTTF", w_SetGlobalFontFromFileTTF },
+{ "SetGlobalFontAndIconsFromFileTTF", w_SetGlobalFontAndIconsFromFileTTF },
 
 // Overrides
 { "Value", w_Value },
