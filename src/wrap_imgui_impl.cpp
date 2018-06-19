@@ -214,7 +214,7 @@ static int w_SetGlobalFontAndIconsFromFileTTF(lua_State *L)
 	lua_remove(L, -2);
 	lua_getfield(L, -1, "getRealDirectory");
 	lua_remove(L, -2);
-	lua_pushstring(L, path);
+	lua_pushstring(L, icon_font_path);
 	lua_call(L, 1, 1);
 	if (lua_isnil(L, -1))
 	{
@@ -223,7 +223,7 @@ static int w_SetGlobalFontAndIconsFromFileTTF(lua_State *L)
 		return 0;
 	}
 	lua_pushstring(L, "/");
-	lua_pushstring(L, path);
+	lua_pushstring(L, icon_font_path);
 	lua_concat(L, 3);
 	const char *real_icon_font_path = lua_tostring(L, -1);
 	lua_pop(L, 1);

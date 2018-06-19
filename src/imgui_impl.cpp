@@ -381,6 +381,6 @@ void SetGlobalFontAndIconsFromFileTTF(const char *path, const char *font_icon_pa
     // The ranges array is not copied by the AddFont* functions and is used lazily
     // so ensure it is available for duration of font usage
     static const ImWchar icons_ranges[] = { 0xf000, 0xf3ff, 0 }; // will not be copied by AddFont* so keep in scope.
-    io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf, io.Fonts->GetGlyphRangesDefault());
-    io.Fonts->AddFontFromFileTTF(font_icon_path, size_pixels, &conf, icons_ranges);
+    io.Fonts->AddFontFromFileTTF(path, size_pixels, &conf);
+    io.Fonts->AddFontFromFileTTF(font_icon_path, size_pixels * 0.8, &conf, icons_ranges);
 }
