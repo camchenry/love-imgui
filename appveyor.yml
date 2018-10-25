@@ -1,7 +1,9 @@
 version: 0.9.{build}
 image: Visual Studio 2017
 configuration: Release
-platform: x64
+platform:
+    - x86
+    - x64
 
 build_script:
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -13,7 +15,7 @@ build_script:
     - msvcbuild
     - set LUAJIT_DIR=c:\projects\LuaJIT-2.0.5\src
     - cd %BUILD_DIR%
-    - cmake -DCMAKE_GENERATOR_PLATFORM=x64 .
+    - cmake -DCMAKE_GENERATOR_PLATFORM=$(PLATFORM) .
     - msbuild Project.sln
     - dir /s c:\projects\love-imgui
 
@@ -21,7 +23,7 @@ test: off
 
 artifacts:
     - path: Release\imgui.dll
-      name: love-imgui-win64.dll
+      name: love-imgui-$(PLATFORM)-windows.dll
 
 deploy:
     provider: GitHub
