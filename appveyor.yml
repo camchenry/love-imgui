@@ -15,7 +15,7 @@ build_script:
     - msvcbuild
     - set LUAJIT_DIR=c:\projects\LuaJIT-2.0.5\src
     - cd %BUILD_DIR%
-    - cmake -DCMAKE_GENERATOR_PLATFORM=$(PLATFORM) .
+    - cmake -DCMAKE_GENERATOR_PLATFORM=$PLATFORM .
     - msbuild Project.sln
     - dir /s c:\projects\love-imgui
 
@@ -23,7 +23,7 @@ test: off
 
 artifacts:
     - path: Release\imgui.dll
-      name: love-imgui-$(PLATFORM)-windows.dll
+      name: love-imgui-$(platform)-windows.dll
 
 deploy:
     provider: GitHub
